@@ -276,3 +276,28 @@ Some useful ways you can use Cucumber tags to classify features and scenarios:
 
 > https://blog.engineyard.com/2009/15-expert-tips-for-using-cucumber/
 
+## Hooks
+
+Cucumber provides the ability to supply hooks to modify the behavior of executing features. Hooks can be used at the various levels of granularity, generally before and after, and are often defined in your env.rb file. Hooks are executed whenever the event they are defined for occurs.
+
+#### Global Hooks
+Global hooks run when Cucumber begins and exits. Begin hooks are informal: simply put the desired code in a file named 'hooks.rb' in the features/support directory
+An exit hook is more formal, using at_exit. Here's an example of a pair of global hooks:
+
+#### Scenario Hooks
+You can add blocks that will run before and after each scenario:
+
+The After block will be passed the scenario that just ran. You can use this to inspect its result status by using the failed?, passed? and exception methods. For example:
+
+#### Step Hooks
+Cucumber gives you the ability to define a block that will be executed after each (and every) step:
+
+#### Tagged Hooks
+If you've tagged some of your scenarios, you can also tag scenario and step hooks. You simply pass the tags as arguments to the hook methods). These tagged hooks will only be executed before/after scenarios that are tagged the same and after steps in scenarios tagged the same. Here's an example where the hooks will only be run before scenarios tagged with @cucumis or @sativus.
+
+**A note on Background steps**
+
+A feature Background is very much like a scenario in that it consists of a series of steps. The difference is that its steps are executed before the steps of each scenario in the feature. It's basically a factoring out of a set of common lead-in steps for the features scenarios. One thing to remember is that a Background is run after any Before hooks
+
+> https://blog.engineyard.com/2009/cucumber-more-advanced
+
