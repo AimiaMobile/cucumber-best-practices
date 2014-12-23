@@ -7,6 +7,8 @@ Best practices and tips for using Cucumber
 
 A collection of best practices collecting from the following sites:
 
+> https://github.com/cucumber/cucumber/wiki/Cucumber-Backgrounder
+
 > http://coryschires.com/ten-tips-for-writing-better-cucumber-steps/
 
 > http://andrewvos.com/2011/06/15/writing-better-cucumber-features/
@@ -172,6 +174,12 @@ Then "I should see the following transaction history:" do |table|
 end
 ```
 
+#### Step definitions that call other steps
+
+A rrule of thumb is that if a step definition is called from another step definition then its contents probably should be extracted out into a custom method. For example a logon step definition is likely to be used repeatedly throughout many features. Turning it into a method is probably called for.
+
+You can either keep these custom methods in the same file as the regular steps or stick them in any convenient file ending in .rb that is located in the support directory.
+
 #### Scenarios should not be dependant on other scenarios
 
 There should never be a situation where one scenario needs to be run before another scenario.
@@ -238,3 +246,13 @@ Given A
 And B
 ```
 
+#### What is a good Step Definition?
+
+Opinions vary of course, but for me a good step definition has the following attributes:
+
+- The matcher is short.
+- The matcher handles both positive and negative (true and false) conditions.
+- The matcher has at most two value parameters
+- The parameter variables are clearly named
+- The body is less than ten lines of code
+- The body does not call other steps
