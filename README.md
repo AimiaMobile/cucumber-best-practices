@@ -1,7 +1,7 @@
-cucumber-best-practices
+Cucumber Best Practices
 =======================
 
-Best practices and tips for using Cucumber
+A compilation of best practices and tips for using Cucumber.
 
 ## Best Practices
 
@@ -270,6 +270,8 @@ Some useful ways you can use Cucumber tags to classify features and scenarios:
 - Level: @functional, @system, @smoke
 - etc
 
+**Reference:**
+
 > http://watirmelon.com/2011/07/04/use-cucumber-feature-folders-for-functional-organization-tags-for-non-functional-classification/
 
 > https://blog.engineyard.com/2009/cucumber-more-advanced
@@ -299,12 +301,11 @@ If you've tagged some of your scenarios, you can also tag scenario and step hook
 
 A feature Background is very much like a scenario in that it consists of a series of steps. The difference is that its steps are executed before the steps of each scenario in the feature. It's basically a factoring out of a set of common lead-in steps for the features scenarios. One thing to remember is that a Background is run after any Before hooks
 
+**Reference:**
+
 > https://blog.engineyard.com/2009/cucumber-more-advanced
 
 ## Folder and File Organisation
-
-The cucumber book
-http://collectiveidea.com/blog/archives/2010/09/13/practical-cucumber-organization/
 
 #### Organizing the Code
 
@@ -346,6 +347,8 @@ In practice, this means you can’t have dependencies between files in the suppo
 Just before it executes each scenario, Cucumber creates a new object. We call this object the World. The step definitions for the scenario execute in the context of the World, effectively as though they were methods of that object. Just like methods on a regular Ruby class, we can use instance variables to pass state between step definitions
 
 To add custom methods to the World, you define them in a module and then tell Cucumber you want them to be mixed into your World
+
+**Reference:**
 
 > [The cucumber book](https://pragprog.com/book/hwcuc/the-cucumber-book)
 
