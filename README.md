@@ -5,7 +5,7 @@ A compilation of best practices and tips for using Cucumber.
 
 ## Best Practices
 
-A collection of best practices collecting from the following sites:
+A series of best practices collected from the following sites:
 
 > https://github.com/cucumber/cucumber/wiki/Cucumber-Backgrounder
 
