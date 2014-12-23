@@ -256,3 +256,23 @@ Opinions vary of course, but for me a good step definition has the following att
 - The parameter variables are clearly named
 - The body is less than ten lines of code
 - The body does not call other steps
+
+## Tags
+
+In the simplest case, Cucumber runs all the scenarios in all the features that you point it at. By using tags you can be more specific about what is run. 
+
+Some useful ways you can use Cucumber tags to classify features and scenarios:
+- Tagging the size of the feature/scenario, e.g. fast, slow, glacial
+- Tagging how often a feature or scenario should be run (every build, hourly, daily etc)
+- Tagging whether the scenario is destructive or invasive (or indeed non-destructive or non-invasive: good for running in production!)
+- Tagging the feature or scenario with some form of meta-data for requirements traceability, or symbolic link to some other document or system
+- What external dependencies they have: @local, @database, @network
+- Level: @functional, @system, @smoke
+- etc
+
+> http://watirmelon.com/2011/07/04/use-cucumber-feature-folders-for-functional-organization-tags-for-non-functional-classification/
+
+> https://blog.engineyard.com/2009/cucumber-more-advanced
+
+> https://blog.engineyard.com/2009/15-expert-tips-for-using-cucumber/
+
