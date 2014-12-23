@@ -301,3 +301,52 @@ A feature Background is very much like a scenario in that it consists of a serie
 
 > https://blog.engineyard.com/2009/cucumber-more-advanced
 
+## Folder and File Organisation
+
+The cucumber book
+http://collectiveidea.com/blog/archives/2010/09/13/practical-cucumber-organization/
+
+#### Organizing the Code
+
+We've found that our favorite way to organize step definition files is to organize them with one file per domain entity. So, in our example, we’d have three files:
+
+```
+features/step_definitions/account_steps.rb
+features/step_definitions/teller_steps.rb
+features/step_definitions/cash_slot_steps.rb
+```
+
+#### Group features by feature
+
+```
+$ ls features/scheduling_appointment/
+canceling_appointment.feature
+client_requesting_appointments_with_insurance.feature
+client_requesting_chat_appointment.feature
+client_requesting_phone_appointment.feature
+client_requesting_video_appointment.feature
+client_responding_to_rescheduled_appointment.feature
+expiring_pending_appointments.feature
+```
+
+#### Code loading order
+
+1. The file `features/support/env.rb` is always the very first file to be loaded when Cucumber starts a test run. You use it to prepare the environment for the rest of your support and step definition code to operate.
+2. When Cucumber first starts a test run, before it loads the step definitions, it loads the files in a directory called `features/support`.
+3. Cucumber will then load all the Ruby files it finds in `features/step_definitions`.
+
+#### features/support
+
+Cucumber will load all the Ruby files it finds in `features/support`. This is convenient, because it means you don’t need to pepper require statements everywhere, but it does mean that the precise order in which files are loaded is hard to control. 
+
+In practice, this means you can’t have dependencies between files in the support directory, because you can’t expect that another file will have already been loaded. There is one exception to that, a special file called env.rb
+
+#### Adding custom helper methods to the world
+
+Just before it executes each scenario, Cucumber creates a new object. We call this object the World. The step definitions for the scenario execute in the context of the World, effectively as though they were methods of that object. Just like methods on a regular Ruby class, we can use instance variables to pass state between step definitions
+
+To add custom methods to the World, you define them in a module and then tell Cucumber you want them to be mixed into your World
+
+> [The cucumber book](https://pragprog.com/book/hwcuc/the-cucumber-book)
+
+> http://collectiveidea.com/blog/archives/2010/09/13/practical-cucumber-organization/
