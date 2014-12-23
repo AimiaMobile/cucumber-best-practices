@@ -3,12 +3,15 @@ cucumber-best-practices
 
 Best practices and tips for using Cucumber
 
-** Best Practices
-http://coryschires.com/ten-tips-for-writing-better-cucumber-steps/
-http://andrewvos.com/2011/06/15/writing-better-cucumber-features/
+## Best Practices
 
-- Scenarios should not be dependant on other scenarios
-- Don't use multiple 'thens'
+A collection of best practices collecting from the following sites:
+
+> http://coryschires.com/ten-tips-for-writing-better-cucumber-steps/
+
+> http://andrewvos.com/2011/06/15/writing-better-cucumber-features/
+
+> https://blog.engineyard.com/2009/15-expert-tips-for-using-cucumber/
 
 #### Use flexible pluralization
 
@@ -119,24 +122,119 @@ end
 
 By convention, these methods should live in features/support/world_extensions.rb and be included in the Cucumber World module. But keep in mind this is a tradeoff: you’re removing duplication but adding indirection. You should be reluctant to define methods until the code makes it very obvious that it’s a good idea.
 
+#### Improve readability with unanchored regular expressions
 
-- Improve readability with unanchored regular expressions
-- When your steps must include data, use tables e.g.
+Most step definitions look something like:
 
-Given I sent "$25" to "mukmuk@example.com" from my "Bank account"
+```ruby
+Given /^I am an admin user$/ do |item_count|
+# ...
+end
+```
+
+Note we’re using `^ `and `$` to anchor our regex to the start and end of the captured string. This ensures the regular expression exactly matches “I am an admin user” (i.e. allows no additional words at the beginning or end of the step). Most of the time, this is exactly what want.
+
+Occasionally, however, it makes sense to omit the final `$`. Take this step for example:
+
+```ruby
+Then /^wait (\d+) seconds/ do |seconds|
+  sleep(seconds.to_i)
+end
+```
+
+Now you can use this definition to write flexible, expressive steps:
+
+```ruby
+Then wait 2 seconds for the revenue statistics to finish loading
+Then wait 5 seconds while the document is converted
+```
+
+#### When your steps must include data, use tables
+
+Generally, steps should be human readable and that means they shouldn’t include loads of cryptic data. But sometimes, you have no other choice. In those cases, use tables to clearly represent the data:
+
+```ruby
+Given I sent "$25" to "test@example.com" from my "Bank account"
 Then I should see the following transaction history:
   | create     | complete    |
   | deposit    | in_progress |
   | transfer   | pending     |
   | withdrawal | pending     |
+```
 
 The step definition looks like the following:
 
+```ruby
 Then "I should see the following transaction history:" do |table|
   table.raw.each do |event, state|
     page.should have_css("tr.#{event}.#{state}")
   end
 end
+```
 
-- Scenario outlines
-- Background
+#### Scenarios should not be dependant on other scenarios
+
+There should never be a situation where one scenario needs to be run before another scenario.
+
+I've personally seen feature files that had scenarios with names that had number prefixes in order to make sure that they ran in a certain order. This is evil and should never happen.
+
+Never ever ever let this happen:
+
+```ruby
+Scenario: 0TestSetup
+  Given some data is in the database
+
+Scenario: 1UserNavigatesToProfilePage
+  Given the user has logged in
+  When I click Profile
+  Then I should see the Profile page
+
+Scenario: 2UserChangesTheirPassword
+  When I enter a new password
+  And I click Save
+  Then I should see "Password changed"
+```
+
+#### Use Background for setup when there's more than one scenario
+
+Remember that whatever is more readable is always better. In the first code sample we only have one scenario so we don't need to DRY up the feature yet, but in the second sample it makes sense to add a Background section.
+
+```ruby
+Scenario: Logged in user visits the user registration page
+  Given I am logged in
+  And I visit the user registration page
+  Then I should be redirected to the home page
+```
+
+```ruby
+Background:
+  Given I am logged in
+
+Scenario: Logged in user visits the user registration page
+  And I visit the user registration page
+  Then I should be redirected to the home page
+
+Scenario: Logged in user visits the logout page
+  And I visit the logout page
+  Then I should be redirected to the home page
+```
+
+#### Feature names are features not processes
+
+Feature names should describe actual features. An example of a bad feature name is "A user registers an account". This feature should probably be called "Registration" or "User Registration".
+
+#### Don't use multiple 'thens'
+
+Each step should do one thing. You should not generally have step patterns containing "and." For example:
+
+```ruby
+Given A and B
+```
+
+should be split into two steps:
+
+```ruby
+Given A
+And B
+```
+
