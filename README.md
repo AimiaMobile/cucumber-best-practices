@@ -376,7 +376,7 @@ activateOfferWithId()
 
 Derive base classes for each relevent platform and override the appropriate methods.
 
-Call the generic interface methods in your step definition. Consider creating a factory of some sort to retrieve the Offer Page for the particular platform under test, e.g. iOS or Android. In the sample below, this is implemented would be obtained from the `newForCurrentPlatformContext` method call.
+Call the generic interface methods in your step definition. Consider creating a factory of some sort to retrieve the Offer Page for the particular platform under test, e.g. iOS or Android. In the sample below, this would be obtained from the `newForCurrentPlatformContext` method call.
 
 ```ruby
 When I activate offer with id: (\d+) do |offerId|
