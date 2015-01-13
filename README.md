@@ -353,3 +353,33 @@ To add custom methods to the World, you define them in a module and then tell Cu
 > [The cucumber book](https://pragprog.com/book/hwcuc/the-cucumber-book)
 
 > http://collectiveidea.com/blog/archives/2010/09/13/practical-cucumber-organization/
+
+#### Page Object
+
+Use the Page Object pattern to abstract platform UI differences. Define a base Page Object class and derive child classes to implement platform specific UI logic, e.g. iOS uses accessibility labels to locate UI elements, whereas Android uses resource ids.
+
+- The basic rule of thumb for a page object is that it should allow a software client to do anything and see anything that a human can
+- It should provide an interface that's easy to program to and hides the underlying widgetry in the window. So to access a text field you should have accessor methods that take and return a string, check boxes should use booleans, and buttons should be represented by action oriented method names
+-  A good rule of thumb is to imagine changing the concrete control - in which case the page object interface shouldn't change.
+- Despite the term "page" object, these objects shouldn't usually be built for each page, but rather for the significant elements on a page. So a page showing multiple albums would have an album list page object containing several album page objects.
+- Page objects should not make assertions themselves. Their responsibility is to provide access to the state of the underlying page. It's up to test clients to carry out the assertion logic.
+
+The below code illustrates what a simple Page Object interaction would look like.
+
+Base class `OfferPage` would have the following interface:
+```ruby
+selectOfferWithId()
+activateOfferWithId()
+```
+
+Derive base classes for each relevent platform and override the appropriate methods.
+
+Call the generic interface methods in your step definition. Consider creating a factory of some sort to retrieve the Offer Page for the particular platform under test, e.g. iOS or Android. In the sample below, this is implemented would be obtained from the `newForCurrentPlatformContext` method call.
+
+```ruby
+When I activate offer with id: (\d+) do |offerId|
+  offerPage = OfferPage.newForCurrentPlatformContext
+  offerPage.selectOfferWithId(offerId)
+  offerPage.activateOfferWithId(offerId)
+end
+```
