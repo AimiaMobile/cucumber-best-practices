@@ -356,6 +356,8 @@ To add custom methods to the World, you define them in a module and then tell Cu
 
 #### Page Object
 
+> http://martinfowler.com/bliki/PageObject.html
+
 Use the Page Object pattern to abstract platform UI differences. Define a base Page Object class and derive child classes to implement platform specific UI logic, e.g. iOS uses accessibility labels to locate UI elements, whereas Android uses resource ids.
 
 - The basic rule of thumb for a page object is that it should allow a software client to do anything and see anything that a human can
